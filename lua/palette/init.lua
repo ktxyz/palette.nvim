@@ -48,13 +48,12 @@ function M.load()
 		vim.lsp.handlers.signature_help(err, result, ctx, config)
 	end
 
-	require("lspconfig.ui.windows").default_options.border = "single"
 
 	-- get merged highlight groups
 	local highlights = require("palette.highlights")
 
-	-- load the colorscheme mappings
 	require("palette.utils").apply_highlight_groups(highlights, config["caching"])
+	-- load the colorscheme mappings
 end
 
 return M
