@@ -39,8 +39,14 @@ function M.load()
 	vim.diagnostic.config({ float = { border = "rounded" } })
 
 	local float = { focusable = true, style = "minimal", border = "rounded" }
-	vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, float)
-	vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, float)
+	vim.lsp.handlers["textDocument/hover"] = function(err, result, ctx, config)
+		config = vim.tbl_deep_extend("force", config or {}, float)
+		vim.lsp.handlers.hover(err, result, ctx, config)
+	end
+	vim.lsp.handlers["textDocument/signatureHelp"] = function(err, result, ctx, config)
+		config = vim.tbl_deep_extend("force", config or {}, float)
+		vim.lsp.handlers.signature_help(err, result, ctx, config)
+	end
 
 	require("lspconfig.ui.windows").default_options.border = "single"
 
